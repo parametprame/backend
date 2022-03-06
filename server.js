@@ -3,7 +3,6 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const errors = require("./helpers/errorHandler");
-const auth = require("./helpers/jwt");
 
 require("dotenv").config();
 
@@ -21,8 +20,8 @@ mongoose.connect(uri, { useNewUrlParser: true }).then(
   }
 );
 
-const usersRouter = require("./routes/user.route");
-const partyRouter = require("./routes/party.route");
+const usersRouter = require("./api/user.route");
+const partyRouter = require("./api/party.route");
 
 app.use(cors());
 app.use(express.json());
@@ -33,18 +32,8 @@ app.use(
   })
 );
 
-// auth.authenticateToken.unless = unless;
-// app.use(
-//   auth.authenticateToken.unless({
-//     path: [
-//       { url: "/users/login", methods: ["POST"] },
-//       { url: "/users/register", methods: ["POST"] }
-//     ],
-//   })
-// );
-
-app.use("/users", usersRouter);
-app.use("/parties", partyRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/parties", partyRouter);
 app.use(errors.errorHandler);
 
 app.listen(port, () => {
